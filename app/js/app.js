@@ -8,7 +8,46 @@
 	.controller('ReadingListController', function() {
 		this.books = books;
 		this.genres = genres;
-	});
+	})
+	.directive('bookGenres', function() {
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/book-genres.html',
+      scope: {
+        genres: '='
+      }
+		}
+	})
+	.directive('bookCovers', function(){
+		return {
+			restrict: 'E',
+			templateUrl: 'partials/book-cover.html',
+			replace: true
+		}
+	})
+  .directive('reviewForm', function(){
+    return {
+      restrict: 'E',
+      templateUrl: 'partials/review-form.html',
+      replace: true,
+      controller: function() {
+        this.showForm = false;
+        this.book = {
+          genres: {}
+        };
+        this.addReview = function(form) {
+          books.push(this.book);
+          this.book = {genres: {}};
+          form.$setPristine();
+        }
+      },
+      controllerAs: 'reviewFormCtrl',
+      scope: {
+        books: '=',
+        genres: '='
+      }
+    }
+  });
 
   var genres = [ 'fable', 'fantasy', 'fiction', 'folklore', 'horror', 'humor', 'legend', 'metafiction', 'mystery', 'mythology', 'non-fiction', 'poetry' ];
 
